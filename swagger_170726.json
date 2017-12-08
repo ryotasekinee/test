@@ -1,0 +1,395 @@
+{
+  "info": {
+    "title": "テスト",
+    "version": "0.0.1"
+  },
+  "swagger": "2.0",
+  "produces": [
+    "application/json"
+  ],
+  "host": "example_test.jp",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/api",
+  "securityDefinitions": {
+    "jwt": {
+      "description": "認証にはJWTを利用します。Login APIを利用して取得したトークンを認証が必要なAPIにセットして利用してください。フォーマットはトークンの前に\"Bearer\"を付けてください： \"Bearer {token}\"",
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    },
+    "api": {
+      "description": "あらかじめ決められているAPI KEYを指定します。JWTと違い\"Bearer\"を付ける必要はありません。",
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/v1/user_info": {
+      "get": {
+        "summary": "会員ユーザ情報取得",
+        "description": "会員ユーザ情報を取得する",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "api": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "type": "string",
+            "in": "header",
+            "description": "ユーザーID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "schema": {
+              "type": "object",
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "user_id"
+                    },
+                    "attributes": {
+                      "type": "object",
+                      "properties": {
+                        "email": {
+                          "type": "string",
+                          "description": "メールアドレス"
+                        },
+                        "last_name": {
+                          "type": "string",
+                          "description": "氏"
+                        },
+                        "first_name": {
+                          "type": "string",
+                          "description": "名"
+                        },
+                        "birthday": {
+                          "type": "integer",
+                          "description": "生年月日"
+                        },
+                        "gender_type_cd": {
+                          "type": "string",
+                          "description": "性別"
+                        },
+                        "zip1": {
+                          "type": "string",
+                          "description": "郵便番号（前）"
+                        },
+                        "zip2": {
+                          "type": "string",
+                          "description": "郵便番号（後）"
+                        },
+                        "pref_cd": {
+                          "type": "string",
+                          "description": "都道府県"
+                        },
+                        "address": {
+                          "type": "string",
+                          "description": "住所"
+                        },
+                        "tel1": {
+                          "type": "string",
+                          "description": "電話番号（前）"
+                        },
+                        "tel2": {
+                          "type": "string",
+                          "description": "電話番号（中）"
+                        },
+                        "tel3": {
+                          "type": "string",
+                          "description": "電話番号（後）"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "無効なパラメータ",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "invalid_parameter"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "無効なパラメータ"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "description": "詳細メッセージ"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "認証失敗",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "エラータイプ"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "認証に失敗しました"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "description": "詳細メッセージ"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "エラー処理",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "system_error"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "システムエラーが発生しました"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "description": "エラー詳細"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/user_regist": {
+      "post": {
+        "summary": "会員登録",
+        "description": "会員の情報を登録する\n",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "api": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "type": "string",
+            "description": "メールアドレス"
+          },
+          {
+            "name": "last_name",
+            "in": "query",
+            "type": "string",
+            "description": "氏"
+          },
+          {
+            "name": "first_name",
+            "in": "query",
+            "type": "string",
+            "description": "名"
+          },
+          {
+            "name": "birthday",
+            "in": "query",
+            "type": "integer",
+            "description": "生年月日"
+          },
+          {
+            "name": "gender_type_cd",
+            "in": "query",
+            "type": "integer",
+            "description": "性別"
+          },
+          {
+            "name": "zip1",
+            "in": "query",
+            "type": "integer",
+            "description": "郵便番号（前）"
+          },
+          {
+            "name": "zip2",
+            "in": "query",
+            "type": "integer",
+            "description": "郵便番号（後）"
+          },
+          {
+            "name": "pref_cd",
+            "in": "query",
+            "type": "string",
+            "description": "都道府県"
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "type": "string",
+            "description": "住所"
+          },
+          {
+            "name": "tel1",
+            "in": "query",
+            "type": "integer",
+            "description": "電話番号（前））"
+          },
+          {
+            "name": "tel2",
+            "in": "query",
+            "type": "integer",
+            "description": "電話番号（中））"
+          },
+          {
+            "name": "tel3",
+            "in": "query",
+            "type": "integer",
+            "description": "電話番号（後））"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "登録完了",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "toppan_id"
+                    },
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "無効なパラメータ",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "invalid_parameter"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "無効なパラメータ"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "description": "詳細メッセージ"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "認証失敗",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "エラータイプ"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "認証に失敗しました"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "description": "詳細メッセージ"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "エラー処理",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "system_error"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "システムエラーが発生しました"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "description": "エラー詳細"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
